@@ -4,14 +4,16 @@ using CardGames.GameLogic;
 
 namespace CardGames
 {
-	public class SnapGame
-	{
-		public static void LoadResources()
-		{
-			Bitmap cards;
-			cards = SwinGame.LoadBitmapNamed("Cards", "Cards.png");
-			SwinGame.BitmapSetCellDetails(cards, 167, 250, 13, 5, 53);      // set the cells in the bitmap to match the cards
-			SwinGame.LoadFontNamed("GameFont", "Chunkfive.otf", 24);
+    public class SnapGame
+    {
+        public static void LoadResources()
+        {
+            Bitmap cards;
+            cards = SwinGame.LoadBitmapNamed ("Cards", "Cards.png");
+            SwinGame.BitmapSetCellDetails (cards, 167, 250, 13, 5, 53);      // set the cells in the bitmap to match the cards
+			SwinGame.LoadSoundEffectNamed("Slap", "slap.wav");
+			SwinGame.LoadSoundEffectNamed("Applause", "applause.wav");
+
 		}
 
 		/// <summary>
@@ -23,9 +25,9 @@ namespace CardGames
 			//Fetch the next batch of UI interaction
 			SwinGame.ProcessEvents();
 
-			if (SwinGame.KeyTyped(KeyCode.vk_SPACE))
+			if (SwinGame.KeyTyped (KeyCode.vk_SPACE))
 			{
-				myGame.Start();
+				myGame.Start ();
 			}
 
 			if (myGame.IsStarted)
@@ -34,10 +36,16 @@ namespace CardGames
 				SwinGame.KeyTyped(KeyCode.vk_RSHIFT))
 				{
 					//TODO: add sound effects
+					
+					SwinGame.PlaySoundEffect("Applause");
+
+
 				}
 				else if (SwinGame.KeyTyped(KeyCode.vk_LSHIFT))
 				{
 					myGame.PlayerHit(0);
+					
+
 				}
 				else if (SwinGame.KeyTyped(KeyCode.vk_RSHIFT))
 				{
@@ -58,18 +66,18 @@ namespace CardGames
 			Card top = myGame.TopCard;
 			if (top != null)
 			{
-				SwinGame.DrawText("Top Card is " + top.ToString(), Color.RoyalBlue, 0, 20);
-				SwinGame.DrawText("Player 1 score: " + myGame.Score(0), Color.White, "GameFont", 0, 30);
-				SwinGame.DrawText("Player 2 score: " + myGame.Score(1), Color.White, "GameFont", 0, 30);
+				SwinGame.DrawText ("Top Card is " + top.ToString (), Color.RoyalBlue, 0, 20);
+				SwinGame.DrawText ("Player 1 score: " + myGame.Score(0), Color.RoyalBlue, 0, 30);
+				SwinGame.DrawText ("Player 2 score: " + myGame.Score(1), Color.RoyalBlue, 0, 40);
 				SwinGame.DrawCell(SwinGame.BitmapNamed("Cards"), top.CardIndex, 521, 153);
 			}
 			else
 			{
-				SwinGame.DrawText("No card played yet...", Color.RoyalBlue, 0, 20);
+				SwinGame.DrawText ("No card played yet...", Color.RoyalBlue, 0, 20);
 			}
 
 			// Draw the back of the cards... to represent the deck
-			SwinGame.DrawCell(SwinGame.BitmapNamed("Cards"), 52, 155, 153);
+			SwinGame.DrawCell (SwinGame.BitmapNamed ("Cards"), 52, 155, 153);
 
 			//Draw onto the screen
 			SwinGame.RefreshScreen(60);
@@ -82,26 +90,27 @@ namespace CardGames
 		private static void UpdateGame(Snap myGame)
 		{
 			myGame.Update(); // just ask the game to do this...
+
 		}
 
-		public static void Main()
-		{
-			//Open the game window
-			SwinGame.OpenGraphicsWindow("Snap!", 860, 500);
+        public static void Main()
+        {
+            //Open the game window
+            SwinGame.OpenGraphicsWindow("Snap!", 860, 500);
 
 			//Load the card images and set their cell details
-			LoadResources();
-
+            LoadResources();
+            
 			// Create the game!
-			Snap myGame = new Snap();
+			Snap myGame = new Snap ();
 
-			//Run the game loop
-			while (false == SwinGame.WindowCloseRequested())
-			{
-				HandleUserInput(myGame);
-				DrawGame(myGame);
-				UpdateGame(myGame);
-			}
-		}
-	}
+            //Run the game loop
+            while(false == SwinGame.WindowCloseRequested())
+            {
+				HandleUserInput (myGame);
+				DrawGame (myGame);
+				UpdateGame (myGame);
+            }
+        }
+    }
 }
